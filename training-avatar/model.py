@@ -17,3 +17,31 @@ num_vertices = 1000  # Example number of vertices for the mesh
 epochs = 10  # Training epochs
 batch_size = 32  # Training batch size
 learning_rate = 0.0005  # Learning rate for Adam optimizer (adjust based on experiment results)
+
+
+Datadir = "./Dataset/coma_data/FaceTalk_170725_00137_TA"
+categories = ["bareteeth", "cheeks_in", "eyebrow", "high_smile", "lips_back", "lips_up", "mouth_down",
+              "mouth_down", "mouth_extreme", "mouth_middle", "mouth_open", "mouth_side", "mouth_up"]
+training_data = []
+
+def creating_training_data():
+    for category in categories:
+        path = os.path.join(Datadir, category)
+        class_num = categories.index(category)
+        for file in os.listdir(path):
+            if file.endswith(".ply"):
+                try:
+                    # Read the .ply file using trimesh
+                    mesh = trimesh.load(os.path.join(path, file))
+                    # Process the mesh data as needed
+                    vertices = mesh.vertices
+                    faces = mesh.faces
+                    # Example: Save vertices and faces to training_data list
+                    training_data.append([vertices, faces, class_num])
+                except Exception as e:
+                    # Print an error if unable to load the file
+                    print(f"Error loading file {os.path.join(path, file)}: {e}")
+
+creating_training_data()
+
+
