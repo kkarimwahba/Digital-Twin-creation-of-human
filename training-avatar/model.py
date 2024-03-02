@@ -137,6 +137,17 @@ latent_vector = np.random.rand(1, latent_dim)
 # Predict the mesh using the model
 predicted_mesh = combined_model.predict([user_image, latent_vector])[0]
 
+# Convert predicted mesh to trimesh format
+mesh = trimesh.Trimesh(vertices=predicted_mesh, process_args=False)  # Avoid extra processing
+
+# Visualize the mesh
+scene = trimesh.Scene()
+scene.add_geometry(mesh)
+scene.show()
+
+# Optional: Export the mesh to a file (e.g., .ply)
+mesh.export("predicted_mesh.ply")
+
 
 
 
