@@ -45,3 +45,9 @@ def creating_training_data():
 creating_training_data()
 
 
+X = np.random.rand(1000, image_height, image_width, num_channels)  # Placeholder images
+y = np.random.rand(1000, num_vertices, 3)  # Placeholder mesh coordinates
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+
