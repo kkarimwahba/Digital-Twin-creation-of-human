@@ -75,6 +75,32 @@ def build_generator(latent_dim, output_dim):
       return model
 
 
+import random 
+
+random.shuffle(training_data)
+
+
+
+image_input = Input(shape=(image_height, image_width, num_channels))  # No batch dimension
+latent_input = Input(shape=(latent_dim,))  
+
+features = cnn(image_input)
+combined_input = tf.concat([features, latent_input], axis=1)
+print(f"Combined input shape after concatenation: {combined_input}")  # Track combined input shape
+
+generator_vertices = build_generator(latent_dim, num_vertices * 3)
+generated_mesh_vertices = generator_vertices(combined_input)
+
+combined_model = Model(inputs=[image_input, latent_input], outputs=generated_mesh_vertices)
+
+# Compile the model
+combined_model.compile(loss=MeanSquaredError(), optimizer=Adam(learning_rate=learning_rate))
+
+# Train the model
+combined_model.fit([X_train, np.zeros((len(X_train), latent_dim))], y_train, epochs=epochs, batch_size=batch_size, validation_data=([X_test, np.zeros((len(X_test), latent_dim))], y_test))
+
+combined_model.save('my_mesh_generator.keras') 
+
 
 
 
