@@ -102,5 +102,15 @@ combined_model.fit([X_train, np.zeros((len(X_train), latent_dim))], y_train, epo
 combined_model.save('my_mesh_generator.keras') 
 
 
+def preprocess_image(image_path):
+  # Load the image
+  img = image.load_img(image_path, target_size=(image_height, image_width))
+  # Convert to a NumPy array
+  img_array = img_to_array(img)
+  # No need to reshape for batch dimension, as it's already handled during model input
+  # Preprocess the image (normalize pixel values to [0, 1])
+  img_array = img_array.astype('float32') / 255.0
+  return img_array
+
 
 
