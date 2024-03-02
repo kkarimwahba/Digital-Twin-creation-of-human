@@ -114,3 +114,29 @@ def preprocess_image(image_path):
 
 
 
+# Load the saved model
+combined_model = load_model('my_mesh_generator.keras')
+
+# User input for image path
+image_path = input("Enter the path to your image: ")
+
+# Preprocess the user-provided image
+user_image = preprocess_image(image_path)
+
+user_image = user_image.reshape(1, image_height, image_width, num_channels)
+
+print(f"Latent vector shape before reshape: {latent_vector.shape}")
+
+
+# Generate a random latent vector
+# Generate a random latent vector with batch dimension of 1
+latent_vector = np.random.rand(1, latent_dim)
+
+
+
+# Predict the mesh using the model
+predicted_mesh = combined_model.predict([user_image, latent_vector])[0]
+
+
+
+
