@@ -51,3 +51,30 @@ y = np.random.rand(1000, num_vertices, 3)  # Placeholder mesh coordinates
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 
+
+def cnn(inputs):
+ 
+  x = Conv2D(32, (3, 3), activation='relu', padding='same')(inputs)
+  x = Conv2D(64, (3, 3), activation='relu', padding='same')(x)
+  # Add more Dense layers or adjust existing ones to achieve output shape of (None, 100)
+  x = Flatten()(x)
+  x = Dense(128, activation='relu')(x)  # Example modification
+  outputs = Dense(100)(x)  # Ensure output shape is (None, 100)
+  model = Model(inputs, outputs, name='cnn')
+  return outputs
+
+
+
+def build_generator(latent_dim, output_dim):
+      inputs = Input(shape=(latent_dim + 100,))
+      x = Dense(128, activation='relu')(inputs)
+      x = Dense(256, activation='relu')(x)
+      x = Dense(output_dim, activation='tanh')(x)  # Output shape: (num_vertices * 3,)
+      outputs = Reshape((output_dim // 3, 3))(x)  # Reshape to (num_vertices, 3)
+      model = Model(inputs, outputs, name='generator')
+      return model
+
+
+
+
+
